@@ -1,47 +1,56 @@
-# OBZUEAI - Omnicurve Studio Pro
+# ObzueAI Omnicurve Studio Pro
 
-![OBZUEAI Omnicurve Studio Pro](https://raw.githubusercontent.com/obzue/obzueai-omnicurve/main/docs/media/logo.png)
+![ObzueAI Omnicurve mark](https://raw.githubusercontent.com/obzue/obzueai-omnicurve/main/docs/media/logo.svg)
 
-An interactive, browser-based ecosystem integrating autonomous AI agent assistance, 3D environment exploration, voice-activated "vibe coding," and a multi-chain cryptocurrency payment gateway.
+Browser studio for a prompt terminal, a local lobby sketch, a display name, and a demo token counter.
 
----
+This repository does not run a shared 3D city, a background agent, a compiler, or a crypto checkout.
 
-## Core Features
+## What works in this tab
 
-- **Omni-Agent Vibe Coding Engine:** Built-in microphone integration across chat and profile prompt bars allowing users to interact with persistent AI agents to construct code, 3D scenes, and digital assets.
-- **Multi-Chain Crypto Gateway:** Built-in digital wallet checkout supporting XRP, BTC, SHIB, USDT, LTC, SOL, and ETH to acquire ecosystem community tokens.
-- **3D Open Lobby & City:** Real-time WebGL workspace for exploring virtual storefronts, visiting creative studios, and collaborating with community members.
-- **Persistent AI Agent Profiles:** Profiles linked with background AI agents capable of running virtual browser tasks, executing code compilers, and automating multi-turn project workflows.
+- Text prompt echo, plus Web Speech input where the browser allows it.
+- Display name and demo token count stored in `localStorage`.
+- Canvas lobby preview drawn in the page.
+- Demo counter. It does not show a deposit address and does not verify a transaction.
 
----
+## What is not in this repo
 
-## Project Structure
+- Multiplayer lobby, marketplace, or live occupancy.
+- Persistent agents, virtual browsers, or unattended compilers.
+- On-chain payment, wallet custody, or token issuance.
+- The skill folders named in the earlier README. Those files were never committed.
+
+## Run
+
+```bash
+npm install
+npm run dev
+```
+
+Production build:
+
+```bash
+npm run build
+```
+
+GitHub Pages base path is `/obzueai-omnicurve/`. The deploy workflow builds `dist` from the repository root.
+
+## Layout
 
 ```text
-OBZUEAI - Omnicurve Studio Pro/
-├── .claude/
-│   └── skills/
-│       ├── crypto-wallet-gateway/
-│       │   └── SKILL.md
-│       ├── pro-tools-engine/
-│       │   └── SKILL.md
-│       └── obsimlabs-web-graphic-master/
-│           └── SKILL.md
-├── docs/
-│   ├── COMMUNITY_GUIDELINES.md
-│   ├── PRIVACY_POLICY.md
-│   └── media/
-│       └── PILOT_VIDEO_SPEC.md
-├── scripts/
-│   ├── push-to-github.js
-│   └── Launch_OBZUEAI.bat
-├── src/
-│   ├── components/
-│   │   ├── ChatPrompt.jsx         # Voice vibe coding mic bar
-│   │   ├── CryptoPaymentModal.jsx # Multi-chain crypto checkout
-│   │   └── UserProfile.jsx        # Profile prompt & AI agent routing
-│   ├── App.jsx
-│   └── main.jsx
-├── index.html
-├── package.json
-└── README.md
+src/
+  App.jsx
+  main.jsx
+  index.css
+  components/
+    ChatPrompt.jsx
+    CryptoPaymentModal.jsx
+    LobbyPreview.jsx
+    UserProfile.jsx
+docs/
+scripts/push-to-github.js   # exits. It does not force-push.
+```
+
+## Fixes in 1.1.0
+
+The first export stored sources as flat double-extension names, so Vite and Pages could not see them. The Pages workflow also entered a directory that did not exist. The old checkout copied placeholder addresses and treated a timeout as payment verification. The old push script force-pushed `main`.
