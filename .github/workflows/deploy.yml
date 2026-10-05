@@ -1,8 +1,9 @@
-name: Deploy OBZUEAI Omnicurve to GitHub Pages
+name: Deploy ObzueAI Omnicurve to GitHub Pages
 
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,13 +27,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      - name: Install and Build
+      - name: Install and build
         run: |
-          cd "OBZUEAI - Omnicurve Studio Pro"
           npm install
           npm run build
+          cp dist/index.html dist/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -40,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'OBZUEAI - Omnicurve Studio Pro/dist'
+          path: dist
 
       - name: Deploy to GitHub Pages
         id: deployment
