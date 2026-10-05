@@ -5,11 +5,12 @@ import LobbyPreview from './components/LobbyPreview';
 import UserProfile from './components/UserProfile';
 import { Cpu, Sparkles, Wallet } from 'lucide-react';
 
-const TOKEN_KEY = 'obzueai-omnicurve-demo-tokens';
+const TOKEN_KEY = 'obzueai-omnicurve-demo-tokens-v2';
+const STARTER = 1500;
 
 export default function App() {
   const [showDemo, setShowDemo] = useState(false);
-  const [tokens, setTokens] = useState(1500);
+  const [tokens, setTokens] = useState(STARTER);
   const [profileName, setProfileName] = useState('Guest');
   const [status, setStatus] = useState('');
   const [messages, setMessages] = useState([
@@ -22,6 +23,7 @@ export default function App() {
   useEffect(() => {
     const saved = window.localStorage.getItem(TOKEN_KEY);
     if (saved && Number.isFinite(Number(saved))) setTokens(Number(saved));
+    window.localStorage.removeItem('obzueai-omnicurve-demo-tokens');
   }, []);
 
   useEffect(() => {
@@ -41,9 +43,10 @@ export default function App() {
     ]);
   };
 
-  const handleDemoClaim = (data) => {
-    setTokens((prev) => prev + data.tokens);
-    setStatus(`Demo counter increased by ${data.tokens}. No ${data.asset} payment occurred.`);
+  const handleReview = (data) => {
+    setStatus(
+      `Charge ${data.charge.toFixed(2)} USD for ${data.grant.toLocaleString()} tokens. Deposit address is not configured, so the counter stayed at ${tokens.toLocaleString()}.`
+    );
     setShowDemo(false);
   };
 
@@ -67,7 +70,7 @@ export default function App() {
             onClick={() => setShowDemo(true)}
             className="flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-cyan-600/20 hover:bg-cyan-500"
           >
-            <Wallet className="h-4 w-4" /> Demo counter
+            <Wallet className="h-4 w-4" /> Charge
           </button>
         </div>
       </header>
@@ -105,7 +108,7 @@ export default function App() {
           </div>
           <UserProfile onNameChange={onNameChange} />
           <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-xs text-slate-400 shadow-xl">
-            <p>Plaza and marketplace counts are not live.</p>
+            <p>Starter balance is 1,500. Unpaid charges do not add to it.</p>
             {status ? <p className="mt-2 text-amber-200">{status}</p> : null}
           </div>
         </section>
@@ -114,8 +117,9 @@ export default function App() {
       {showDemo ? (
         <CryptoPaymentModal
           tokenPackage={{ name: '5,000 demo tokens', priceUSD: '49.99', tokens: 5000 }}
+          balance={tokens}
           onClose={() => setShowDemo(false)}
-          onDemoClaim={handleDemoClaim}
+          onReview={handleReview}
         />
       ) : null}
     </div>
