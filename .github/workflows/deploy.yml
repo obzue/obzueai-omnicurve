@@ -30,6 +30,8 @@ jobs:
           node-version: 20
 
       - name: Install and build
+        env:
+          VITE_BASE: /obzueai-omnicurve/
         run: |
           npm install
           npm run build
